@@ -11,25 +11,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appparcial2.adapter.PeliculaAdapter
 import com.example.appparcial2.databinding.ActivityMainBinding
 import com.example.appparcial2.viewmodel.PeliculaViewModel
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private val viewModel: PeliculaViewModel by lazy {
+        ViewModelHolder.getSharedPeliculaViewModel()
+    }
 
-    private lateinit var binding:ActivityMainBinding
-    private val viewModel: PeliculaViewModel by viewModels()
     private lateinit var peliculaAdapter: PeliculaAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Log.d("ViewModelTest", "Main VM Hash: ${viewModel.hashCode()}")
 
         setupRecyclerView()
         observePeliculas()
         setupFab()
-
     }
 
 

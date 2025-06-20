@@ -18,8 +18,9 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityRegistroPeliculaBinding
-
-    private val viewModel: PeliculaViewModel by viewModels()
+    private val viewModel: PeliculaViewModel by lazy {
+        ViewModelHolder.getSharedPeliculaViewModel()
+    }
 
 
 
@@ -35,6 +36,8 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        // Verificación (opcional)
+        Log.d("ViewModelTest", "Registro VM Hash: ${viewModel.hashCode()}")
 
 
         configurarYearPicker()
@@ -209,6 +212,16 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         viewModel.agregarPelicula(nuevaPelicula)
 
 
+        // --- AÑADIMOS ESTO PARA IMPRIMIR LA LISTA ACTUALIZADA ---
+        // Accedemos al valor actual de la lista de películas en el ViewModel
+        val listaActualizada = viewModel.peliculas.value
+        Log.d("RegistroPelicula", "Lista de películas después de modificar: $listaActualizada")
+        // Puedes cambiar "RegistroPelicula" por el TAG que quieras para filtrar en Logcat.
+        // Y "$listaActualizada" imprimirá la representación toString() de la lista de películas.
+        // Si quieres ver cada película individualmente, puedes iterar:
+        // listaActualizada?.forEach { Log.d("RegistroPelicula", "Pelicula: $it") }
+        // --- FIN DE LA ADICIÓN ---
+
 
         Toast.makeText(this, "Película registrada", Toast.LENGTH_SHORT).show()
 
@@ -260,7 +273,15 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
             viewModel.eliminarPeliculaPorId(it.id)
 
-
+            // --- AÑADIMOS ESTO PARA IMPRIMIR LA LISTA ACTUALIZADA ---
+            // Accedemos al valor actual de la lista de películas en el ViewModel
+            val listaActualizada = viewModel.peliculas.value
+            Log.d("RegistroPelicula", "Lista de películas después de modificar: $listaActualizada")
+            // Puedes cambiar "RegistroPelicula" por el TAG que quieras para filtrar en Logcat.
+            // Y "$listaActualizada" imprimirá la representación toString() de la lista de películas.
+            // Si quieres ver cada película individualmente, puedes iterar:
+            // listaActualizada?.forEach { Log.d("RegistroPelicula", "Pelicula: $it") }
+            // --- FIN DE LA ADICIÓN ---
 
             Toast.makeText(this, "Película eliminada", Toast.LENGTH_SHORT).show()
 

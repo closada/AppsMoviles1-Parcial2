@@ -46,13 +46,13 @@ class PeliculaViewModel: ViewModel() {
         val index = currentList.indexOfFirst { it.id == peliculaActualizada.id }
         if (index != -1) {
             currentList[index] = peliculaActualizada
-            _peliculas.value = currentList.toList()
+            _peliculas.value = currentList
         }
     }
 
     fun eliminarPeliculaPorId(id: Int) {
         val currentList = _peliculas.value?.toMutableList() ?: return
-        _peliculas.value = currentList.filter { it.id != id }.toList()
+        _peliculas.value = currentList.filter { it.id != id }
     }
 
 }
