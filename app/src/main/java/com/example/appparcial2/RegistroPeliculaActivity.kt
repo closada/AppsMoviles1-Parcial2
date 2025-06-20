@@ -16,17 +16,12 @@ import java.util.*
 
 class RegistroPeliculaActivity : AppCompatActivity() {
 
-
-
     private lateinit var binding: ActivityRegistroPeliculaBinding
     private val viewModel: PeliculaViewModel by lazy {
         ViewModelHolder.getSharedPeliculaViewModel()
     }
 
-
-
     private var peliculaExistente: Pelicula? = null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,15 +29,10 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         configurarYearPicker()
         configurarSpinnerGenero()
 
-
-
         val pelicula = intent.getSerializableExtra("pelicula") as? Pelicula
-
-
 
         if (pelicula != null) {
             mostrarDetallesParaEditar(pelicula)
@@ -50,7 +40,6 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         } else {
             prepararParaRegistro()
         }
-
 
         binding.btnVolver.setOnClickListener {
             finish() // Cierra esta activity y vuelve a la anterior
@@ -67,10 +56,7 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         binding.btnEliminar.setOnClickListener {
             eliminarPelicula()
         }
-
     }
-
-
 
     private fun configurarYearPicker() {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -81,16 +67,12 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun configurarSpinnerGenero() {
         val generos = Genero.values().map { it.name.lowercase().replaceFirstChar(Char::uppercase) }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, generos)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spGenero.adapter = adapter
     }
-
-
 
     private fun mostrarDetallesParaEditar(pelicula: Pelicula) {
         peliculaExistente = pelicula
@@ -109,8 +91,6 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             btnEliminar.visibility = View.VISIBLE
         }
     }
-
-
 
     private fun prepararParaRegistro() {
         binding.apply {
@@ -139,16 +119,11 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             puntuacion = puntuacion,
             genero = generoSeleccionado
         )
-
         viewModel.agregarPelicula(nuevaPelicula, applicationContext)
-
 
         Toast.makeText(this, "Película registrada", Toast.LENGTH_SHORT).show()
         finish()
-
     }
-
-
 
     private fun modificarPelicula() {
 
@@ -163,22 +138,14 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Película modificada", Toast.LENGTH_SHORT).show()
             finish()
-
         }
-
     }
 
-
-
     private fun eliminarPelicula() {
-
         peliculaExistente?.let {
-
             viewModel.eliminarPeliculaPorId(it.id, applicationContext)
-
             Toast.makeText(this, "Película eliminada", Toast.LENGTH_SHORT).show()
             finish()
-
         }
     }
 }

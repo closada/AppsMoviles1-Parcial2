@@ -12,6 +12,8 @@ import com.example.appparcial2.adapter.PeliculaAdapter
 import com.example.appparcial2.databinding.ActivityMainBinding
 import com.example.appparcial2.viewmodel.PeliculaViewModel
 import android.util.Log
+import android.widget.Toast
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -32,6 +34,20 @@ class MainActivity : AppCompatActivity() {
         viewModel.cargarPeliculasDesdeArchivo(applicationContext)
         observePeliculas()
         setupFab()
+
+
+        binding.btnResetear.setOnClickListener {
+            val archivo = File(applicationContext.filesDir, "peliculas.json")
+            if (archivo.exists()) {
+                archivo.delete()
+                Toast.makeText(this, "Películas reseteadas", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "No hay datos para borrar", Toast.LENGTH_SHORT).show()
+            }
+
+            viewModel.cargarPeliculasDesdeArchivo(applicationContext)
+        }
+
     }
 
 
