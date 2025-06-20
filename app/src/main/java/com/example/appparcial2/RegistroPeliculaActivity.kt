@@ -11,6 +11,7 @@ import com.example.appparcial2.databinding.ActivityRegistroPeliculaBinding
 import com.example.appparcial2.model.Genero
 import com.example.appparcial2.model.Pelicula
 import com.example.appparcial2.viewmodel.PeliculaViewModel
+import com.example.appparcial2.repository.PeliculasRepository
 import java.util.*
 
 class RegistroPeliculaActivity : AppCompatActivity() {
@@ -139,9 +140,8 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             genero = generoSeleccionado
         )
 
+        viewModel.agregarPelicula(nuevaPelicula, applicationContext)
 
-
-        viewModel.agregarPelicula(nuevaPelicula)
 
         Toast.makeText(this, "Película registrada", Toast.LENGTH_SHORT).show()
         finish()
@@ -159,12 +159,9 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             it.puntuacion = binding.rbPuntuacion.rating.toInt()
             it.genero = Genero.valueOf(binding.spGenero.selectedItem.toString().uppercase())
 
-            viewModel.actualizarPelicula(it)
+            viewModel.actualizarPelicula(it, applicationContext)
 
             Toast.makeText(this, "Película modificada", Toast.LENGTH_SHORT).show()
-
-            setResult(RESULT_OK)
-
             finish()
 
         }
@@ -177,7 +174,7 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
         peliculaExistente?.let {
 
-            viewModel.eliminarPeliculaPorId(it.id)
+            viewModel.eliminarPeliculaPorId(it.id, applicationContext)
 
             Toast.makeText(this, "Película eliminada", Toast.LENGTH_SHORT).show()
             finish()

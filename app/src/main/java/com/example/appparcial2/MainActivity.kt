@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
 
         setupRecyclerView()
+        /* cargamos las peliculas desde el JSON */
+        viewModel.cargarPeliculasDesdeArchivo(applicationContext)
         observePeliculas()
         setupFab()
     }
