@@ -2,20 +2,16 @@ package com.example.appparcial2
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appparcial2.adapter.PeliculaAdapter
 import com.example.appparcial2.databinding.ActivityMainBinding
+import com.example.appparcial2.model.Genero
+import com.example.appparcial2.model.Pelicula
 import com.example.appparcial2.viewmodel.PeliculaViewModel
-import android.util.Log
-import android.widget.Toast
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private val viewModel: PeliculaViewModel by lazy {
         ViewModelHolder.getSharedPeliculaViewModel()
@@ -23,51 +19,55 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var peliculaAdapter: PeliculaAdapter
 
+    /* VARIABLES PARA FILTROS VARIOS */
+    private var peliculasOriginales = listOf<Pelicula>()
+    private val generosSeleccionados = mutableSetOf<Genero>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         setupRecyclerView()
-        /* cargamos las peliculas desde el JSON */
-        viewModel.cargarPeliculasDesdeArchivo(applicationContext)
-        observePeliculas()
+        setupFiltrosGeneros()
+        setupSearchView()
         setupFab()
 
+        viewModel.cargarPeliculasDesdeArchivo(applicationContext)
+        observePeliculas()
 
         binding.btnResetear.setOnClickListener {
-            val archivo = File(applicationContext.filesDir, "peliculas.json")
+            val archivo = applicationContext.filesDir.resolve("peliculas.json")
             if (archivo.exists()) {
                 archivo.delete()
-                Toast.makeText(this, "Películas reseteadas", Toast.LENGTH_SHORT).show()
+                showToast("Películas reseteadas")
             } else {
-                Toast.makeText(this, "No hay datos para borrar", Toast.LENGTH_SHORT).show()
+                showToast("No hay datos para borrar")
             }
-
             viewModel.cargarPeliculasDesdeArchivo(applicationContext)
         }
+    }
 
+    /* PARA BORRAR EL BUSCADOR A LA HORA DE VOLVER AL MAIN ACTIVITY */
+    override fun onResume() {
+        super.onResume()
+        // Resetea el buscador y filtros cuando volvés del otro activity
+        binding.svBuscar.setQuery("", false)
+        generosSeleccionados.clear()
+        resetearChips()
+        aplicarFiltros()
     }
 
 
-    private fun setupFab() {
-        binding.fabAddPelicula.setOnClickListener {
-            // Abrir la actividad de registro sin pasar datos (para nueva película)
-            val intent = Intent(this, RegistroPeliculaActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
+    /* ENVIA la informacion x recycler view */
     private fun setupRecyclerView() {
         peliculaAdapter = PeliculaAdapter(emptyList()) { pelicula ->
             val intent = Intent(this, RegistroPeliculaActivity::class.java).apply {
                 putExtra("pelicula", pelicula)
             }
             startActivity(intent)
-
         }
-
         binding.rvPeliculas.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = peliculaAdapter
@@ -75,11 +75,73 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun setupSearchView() {
+        binding.svBuscar.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?) = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                aplicarFiltros()
+                return true
+            }
+        })
+    }
 
-    private fun observePeliculas() {
-        viewModel.peliculas.observe(this) {
-                peliculas -> peliculaAdapter.updatePeliculas(peliculas)
+    /* DEFINE los filtros de generos */
+    private fun setupFiltrosGeneros() {
+        binding.chipGroupGeneros.removeAllViews()
+
+        Genero.values().forEach { genero ->
+            val chip = com.google.android.material.chip.Chip(this).apply {
+                text = genero.name.lowercase().replaceFirstChar { it.uppercase() }
+                isCheckable = true
+                isChecked = false
+                setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) {
+                        generosSeleccionados.add(genero)
+                    } else {
+                        generosSeleccionados.remove(genero)
+                    }
+                    aplicarFiltros()
+                }
+            }
+            binding.chipGroupGeneros.addView(chip)
         }
     }
 
+    /* RESETEA los filtros de genero */
+    private fun resetearChips() {
+        for (i in 0 until binding.chipGroupGeneros.childCount) {
+            val chip = binding.chipGroupGeneros.getChildAt(i) as com.google.android.material.chip.Chip
+            chip.isChecked = false
+        }
+    }
+
+    /* APLICA el filtro que sea (texto o genero) */
+    private fun aplicarFiltros() {
+        val textoBusqueda = binding.svBuscar.query?.toString()?.lowercase() ?: ""
+
+        val listaFiltrada = peliculasOriginales.filter { pelicula ->
+            val cumpleTexto = pelicula.titulo.lowercase().contains(textoBusqueda)
+            val cumpleGenero = if (generosSeleccionados.isEmpty()) true else generosSeleccionados.contains(pelicula.genero)
+            cumpleTexto && cumpleGenero
+        }
+        peliculaAdapter.updatePeliculas(listaFiltrada)
+    }
+
+    private fun observePeliculas() {
+        viewModel.peliculas.observe(this) { peliculas ->
+            peliculasOriginales = peliculas
+            aplicarFiltros()
+        }
+    }
+
+    private fun setupFab() {
+        binding.fabAddPelicula.setOnClickListener {
+            val intent = Intent(this, RegistroPeliculaActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun showToast(mensaje: String) {
+        android.widget.Toast.makeText(this, mensaje, android.widget.Toast.LENGTH_SHORT).show()
+    }
 }
