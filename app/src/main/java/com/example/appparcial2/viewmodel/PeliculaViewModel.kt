@@ -30,6 +30,9 @@ class PeliculaViewModel: ViewModel() {
         return peliculas.value?.find {it.id == peliculaId }
     }
 
+    fun getPeliculas(): List<Pelicula> = _peliculas.value.orEmpty()
+
+
     fun agregarPelicula(pelicula: Pelicula, context: Context) {
         val listaActual = _peliculas.value.orEmpty().toMutableList()
         listaActual.add(pelicula)

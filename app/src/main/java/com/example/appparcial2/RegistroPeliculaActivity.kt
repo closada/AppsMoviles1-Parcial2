@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appparcial2.databinding.ActivityRegistroPeliculaBinding
+import com.example.appparcial2.exception.DatosInvalidosException
+import com.example.appparcial2.exception.PeliculaDuplicadaException
 import com.example.appparcial2.model.Genero
 import com.example.appparcial2.model.Pelicula
 import com.example.appparcial2.viewmodel.PeliculaViewModel
@@ -100,6 +102,20 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         }
     }
 
+
+    /* FUNCION VALIDADORA DE DATOS: */
+    private fun validarDatos(titulo: String, resenia: String, puntuacion: Int, esNuevo: Boolean) {
+        if (titulo.isBlank()) throw DatosInvalidosException("El título no puede estar vacío")
+        if (resenia.isBlank()) throw DatosInvalidosException("La reseña no puede estar vacía")
+        if (puntuacion == 0) throw DatosInvalidosException("La puntuación no puede ser 0 estrellas")
+
+        if (esNuevo) {
+            val yaExiste = viewModel.getPeliculas().any { it.titulo.equals(titulo, ignoreCase = true) }
+            if (yaExiste) throw PeliculaDuplicadaException("Ya existe una película con ese título")
+        }
+    }
+
+
     private fun registrarPelicula() {
         val titulo = binding.etTitulo.text.toString()
         val resenia = binding.etResenia.text.toString()
@@ -107,39 +123,65 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         val puntuacion = binding.rbPuntuacion.rating.toInt()
         val generoSeleccionado = Genero.valueOf(binding.spGenero.selectedItem.toString().uppercase())
 
-        if (titulo.isBlank()) {
-            Toast.makeText(this, "El título es obligatorio", Toast.LENGTH_SHORT).show()
-            return
+        try {
+            validarDatos(titulo, resenia, puntuacion, esNuevo = true)
+
+            val nuevaPelicula = Pelicula(
+                titulo = titulo,
+                resenia = resenia,
+                anio = anio,
+                puntuacion = puntuacion,
+                genero = generoSeleccionado
+            )
+
+            viewModel.agregarPelicula(nuevaPelicula, applicationContext)
+
+            Toast.makeText(this, "Película registrada", Toast.LENGTH_SHORT).show()
+            finish()
+
+        } catch (e: DatosInvalidosException) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        } catch (e: PeliculaDuplicadaException) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error inesperado", Toast.LENGTH_SHORT).show()
+            Log.e("RegistroPelicula", "Error al registrar", e)
         }
-
-        val nuevaPelicula = Pelicula(
-            titulo = titulo,
-            resenia = resenia,
-            anio = anio,
-            puntuacion = puntuacion,
-            genero = generoSeleccionado
-        )
-        viewModel.agregarPelicula(nuevaPelicula, applicationContext)
-
-        Toast.makeText(this, "Película registrada", Toast.LENGTH_SHORT).show()
-        finish()
     }
+
 
     private fun modificarPelicula() {
-
         peliculaExistente?.let {
-            it.titulo = binding.etTitulo.text.toString()
-            it.resenia = binding.etResenia.text.toString()
-            it.anio = binding.npAnio.value
-            it.puntuacion = binding.rbPuntuacion.rating.toInt()
-            it.genero = Genero.valueOf(binding.spGenero.selectedItem.toString().uppercase())
+            val titulo = binding.etTitulo.text.toString()
+            val resenia = binding.etResenia.text.toString()
+            val anio = binding.npAnio.value
+            val puntuacion = binding.rbPuntuacion.rating.toInt()
+            val generoSeleccionado = Genero.valueOf(binding.spGenero.selectedItem.toString().uppercase())
 
-            viewModel.actualizarPelicula(it, applicationContext)
+            try {
+                validarDatos(titulo, resenia, puntuacion, esNuevo = false)
 
-            Toast.makeText(this, "Película modificada", Toast.LENGTH_SHORT).show()
-            finish()
+                it.titulo = titulo
+                it.resenia = resenia
+                it.anio = anio
+                it.puntuacion = puntuacion
+                it.genero = generoSeleccionado
+
+                viewModel.actualizarPelicula(it, applicationContext)
+
+                Toast.makeText(this, "Película modificada", Toast.LENGTH_SHORT).show()
+                setResult(RESULT_OK)
+                finish()
+
+            } catch (e: DatosInvalidosException) {
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error al modificar", Toast.LENGTH_SHORT).show()
+                Log.e("RegistroPelicula", "Error al modificar", e)
+            }
         }
     }
+
 
     private fun eliminarPelicula() {
         peliculaExistente?.let {
