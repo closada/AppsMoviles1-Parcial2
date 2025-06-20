@@ -29,19 +29,12 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         binding = ActivityRegistroPeliculaBinding.inflate(layoutInflater)
-
         super.onCreate(savedInstanceState)
-
         setContentView(binding.root)
-
-        // Verificación (opcional)
-        Log.d("ViewModelTest", "Registro VM Hash: ${viewModel.hashCode()}")
 
 
         configurarYearPicker()
-
         configurarSpinnerGenero()
 
 
@@ -51,39 +44,27 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
 
         if (pelicula != null) {
-
             mostrarDetallesParaEditar(pelicula)
-
             peliculaExistente = pelicula
-
         } else {
-
             prepararParaRegistro()
-
         }
 
 
+        binding.btnVolver.setOnClickListener {
+            finish() // Cierra esta activity y vuelve a la anterior
+        }
 
         binding.btnRegistrar.setOnClickListener {
-
             registrarPelicula()
-
         }
-
-
 
         binding.btnModificar.setOnClickListener {
-
             modificarPelicula()
-
         }
 
-
-
         binding.btnEliminar.setOnClickListener {
-
             eliminarPelicula()
-
         }
 
     }
@@ -91,112 +72,64 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
 
     private fun configurarYearPicker() {
-
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-
         binding.npAnio.apply {
-
             minValue = 1900
-
             maxValue = currentYear
-
             value = currentYear
-
         }
-
     }
 
 
 
     private fun configurarSpinnerGenero() {
-
         val generos = Genero.values().map { it.name.lowercase().replaceFirstChar(Char::uppercase) }
-
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, generos)
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         binding.spGenero.adapter = adapter
-
     }
 
 
 
     private fun mostrarDetallesParaEditar(pelicula: Pelicula) {
-
         peliculaExistente = pelicula
 
-
-
         binding.apply {
-
             etTitulo.setText(pelicula.titulo)
-
             etResenia.setText(pelicula.resenia)
-
             npAnio.value = pelicula.anio
-
             rbPuntuacion.rating = pelicula.puntuacion.toFloat()
 
-
-
             val indexGenero = Genero.values().indexOf(pelicula.genero)
-
             spGenero.setSelection(indexGenero)
 
-
-
             btnRegistrar.visibility = View.GONE
-
             btnModificar.visibility = View.VISIBLE
-
             btnEliminar.visibility = View.VISIBLE
-
         }
-
     }
 
 
 
     private fun prepararParaRegistro() {
-
         binding.apply {
-
             btnRegistrar.visibility = View.VISIBLE
-
             btnModificar.visibility = View.GONE
-
             btnEliminar.visibility = View.GONE
-
         }
-
     }
 
-
-
     private fun registrarPelicula() {
-
         val titulo = binding.etTitulo.text.toString()
-
         val resenia = binding.etResenia.text.toString()
-
         val anio = binding.npAnio.value
-
         val puntuacion = binding.rbPuntuacion.rating.toInt()
-
         val generoSeleccionado = Genero.valueOf(binding.spGenero.selectedItem.toString().uppercase())
 
-
-
         if (titulo.isBlank()) {
-
             Toast.makeText(this, "El título es obligatorio", Toast.LENGTH_SHORT).show()
-
             return
-
         }
-
-
 
         val nuevaPelicula = Pelicula(
             titulo = titulo,
@@ -204,27 +137,13 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             anio = anio,
             puntuacion = puntuacion,
             genero = generoSeleccionado
-
         )
 
 
 
         viewModel.agregarPelicula(nuevaPelicula)
 
-
-        // --- AÑADIMOS ESTO PARA IMPRIMIR LA LISTA ACTUALIZADA ---
-        // Accedemos al valor actual de la lista de películas en el ViewModel
-        val listaActualizada = viewModel.peliculas.value
-        Log.d("RegistroPelicula", "Lista de películas después de modificar: $listaActualizada")
-        // Puedes cambiar "RegistroPelicula" por el TAG que quieras para filtrar en Logcat.
-        // Y "$listaActualizada" imprimirá la representación toString() de la lista de películas.
-        // Si quieres ver cada película individualmente, puedes iterar:
-        // listaActualizada?.forEach { Log.d("RegistroPelicula", "Pelicula: $it") }
-        // --- FIN DE LA ADICIÓN ---
-
-
         Toast.makeText(this, "Película registrada", Toast.LENGTH_SHORT).show()
-
         finish()
 
     }
@@ -240,20 +159,7 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             it.puntuacion = binding.rbPuntuacion.rating.toInt()
             it.genero = Genero.valueOf(binding.spGenero.selectedItem.toString().uppercase())
 
-
-
             viewModel.actualizarPelicula(it)
-
-            // --- AÑADIMOS ESTO PARA IMPRIMIR LA LISTA ACTUALIZADA ---
-            // Accedemos al valor actual de la lista de películas en el ViewModel
-            val listaActualizada = viewModel.peliculas.value
-            Log.d("RegistroPelicula", "Lista de películas después de modificar: $listaActualizada")
-            // Puedes cambiar "RegistroPelicula" por el TAG que quieras para filtrar en Logcat.
-            // Y "$listaActualizada" imprimirá la representación toString() de la lista de películas.
-            // Si quieres ver cada película individualmente, puedes iterar:
-            // listaActualizada?.forEach { Log.d("RegistroPelicula", "Pelicula: $it") }
-            // --- FIN DE LA ADICIÓN ---
-
 
             Toast.makeText(this, "Película modificada", Toast.LENGTH_SHORT).show()
 
@@ -273,24 +179,9 @@ class RegistroPeliculaActivity : AppCompatActivity() {
 
             viewModel.eliminarPeliculaPorId(it.id)
 
-            // --- AÑADIMOS ESTO PARA IMPRIMIR LA LISTA ACTUALIZADA ---
-            // Accedemos al valor actual de la lista de películas en el ViewModel
-            val listaActualizada = viewModel.peliculas.value
-            Log.d("RegistroPelicula", "Lista de películas después de modificar: $listaActualizada")
-            // Puedes cambiar "RegistroPelicula" por el TAG que quieras para filtrar en Logcat.
-            // Y "$listaActualizada" imprimirá la representación toString() de la lista de películas.
-            // Si quieres ver cada película individualmente, puedes iterar:
-            // listaActualizada?.forEach { Log.d("RegistroPelicula", "Pelicula: $it") }
-            // --- FIN DE LA ADICIÓN ---
-
             Toast.makeText(this, "Película eliminada", Toast.LENGTH_SHORT).show()
-
-            setResult(RESULT_OK)
-
             finish()
 
         }
-
     }
-
 }

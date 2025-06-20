@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("ViewModelTest", "Main VM Hash: ${viewModel.hashCode()}")
 
         setupRecyclerView()
         observePeliculas()

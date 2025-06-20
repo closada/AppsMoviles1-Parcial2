@@ -116,6 +116,12 @@
                 android:text="Eliminar"
                 android:visibility="gone" />
         </LinearLayout>
+        <Button
+            android:id="@+id/btnVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volver atrás"
+            android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 </ScrollView>
