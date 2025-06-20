@@ -36,7 +36,7 @@ class PeliculaViewModel: ViewModel() {
     fun agregarPelicula(pelicula: Pelicula) {
         val listaActual = _peliculas.value.orEmpty().toMutableList()
         listaActual.add(pelicula)
-        _peliculas.value = listaActual.toList() // forzamos que sea una nueva lista
+        _peliculas.value = listaActual
     }
 
 

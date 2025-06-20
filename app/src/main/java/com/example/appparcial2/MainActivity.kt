@@ -15,9 +15,7 @@ import com.example.appparcial2.viewmodel.PeliculaViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityMainBinding
-
     private val viewModel: PeliculaViewModel by viewModels()
-
     private lateinit var peliculaAdapter: PeliculaAdapter
 
 
@@ -30,16 +28,23 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
         observePeliculas()
-
+        setupFab()
 
     }
 
 
+    private fun setupFab() {
+        binding.fabAddPelicula.setOnClickListener {
+            // Abrir la actividad de registro sin pasar datos (para nueva película)
+            val intent = Intent(this, RegistroPeliculaActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     private fun setupRecyclerView() {
         peliculaAdapter = PeliculaAdapter(emptyList()) { pelicula ->
             val intent = Intent(this, RegistroPeliculaActivity::class.java).apply {
-                putExtra("pelicula_id", pelicula.id)
+                putExtra("pelicula", pelicula)
             }
             startActivity(intent)
 

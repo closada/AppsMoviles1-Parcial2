@@ -8,8 +8,8 @@ import com.example.appparcial2.model.Pelicula
 
 class PeliculaAdapter(
     private var peliculas: List<Pelicula>,
-    private val onPeliculaClick:(Pelicula) -> Unit):
-    RecyclerView.Adapter<PeliculaAdapter.PeliculaViewHolder>() {
+    private val onPeliculaClick: (Pelicula) -> Unit
+) : RecyclerView.Adapter<PeliculaAdapter.PeliculaViewHolder>() {
 
     inner class PeliculaViewHolder(private val binding: ItemPeliculaBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -43,7 +43,7 @@ class PeliculaAdapter(
 
     override fun getItemCount() = peliculas.size
 
-    fun updatePeliculas(newPeliculas:List<Pelicula>){
+    fun updatePeliculas(newPeliculas: List<Pelicula>) {
         peliculas = newPeliculas
         notifyDataSetChanged()
     }
