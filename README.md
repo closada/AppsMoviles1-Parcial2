@@ -87,5 +87,13 @@ Aplicación Android desarrollada en Android Studio que permite registrar, modifi
 
 ---
 
+## Cómo ejecutar la app
+
+1. Clonar el repositorio o abrir el proyecto en Android Studio.
+2. Ejecutar en un emulador o dispositivo físico.
+3. La app carga películas de ejemplo si no existe el archivo `peliculas.json`.
+
+---
+
 ### Autores:
 Mailen Acosta Vera, Mangialavore Matias y Losada Camila
