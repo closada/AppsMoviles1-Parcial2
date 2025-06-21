@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /* PARA BORRAR EL BUSCADOR A LA HORA DE VOLVER AL MAIN ACTIVITY */
+    /* PARA BORRAR LOS FILTROS A LA HORA DE VOLVER AL MAIN ACTIVITY */
     override fun onResume() {
         super.onResume()
         // Resetea el buscador y filtros cuando volvés del otro activity
@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    /* setea el listener en el buscador */
     private fun setupSearchView() {
         binding.svBuscar.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?) = false
@@ -127,6 +128,7 @@ class MainActivity : AppCompatActivity() {
         peliculaAdapter.updatePeliculas(listaFiltrada)
     }
 
+
     private fun observePeliculas() {
         viewModel.peliculas.observe(this) { peliculas ->
             peliculasOriginales = peliculas
@@ -134,6 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /* Listener de boton para añadir nueva pelicula */
     private fun setupFab() {
         binding.fabAddPelicula.setOnClickListener {
             val intent = Intent(this, RegistroPeliculaActivity::class.java)
@@ -141,6 +144,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /* funcion para no repetir código toast */
     private fun showToast(mensaje: String) {
         android.widget.Toast.makeText(this, mensaje, android.widget.Toast.LENGTH_SHORT).show()
     }

@@ -34,15 +34,16 @@ class RegistroPeliculaActivity : AppCompatActivity() {
         configurarYearPicker()
         configurarSpinnerGenero()
 
+        /* levanto la pelicula si me lo está mandando la mainActivity */
         val pelicula = intent.getSerializableExtra("pelicula") as? Pelicula
 
         if (pelicula != null) {
             mostrarDetallesParaEditar(pelicula)
-            peliculaExistente = pelicula
         } else {
             prepararParaRegistro()
         }
 
+        /* seteo los listener en los botones */
         binding.btnVolver.setOnClickListener {
             finish() // Cierra esta activity y vuelve a la anterior
         }

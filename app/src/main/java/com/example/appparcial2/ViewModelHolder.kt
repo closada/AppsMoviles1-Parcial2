@@ -21,9 +21,9 @@ object ViewModelHolder {
 
 // Factory para crear el ViewModel
 class PeliculaViewModelFactory : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T { /*class T es de tipo genérico o heredada de ViewModel*/
         if (modelClass.isAssignableFrom(PeliculaViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
+            @Suppress("UNCHECKED_CAST") /*para evitar que el compilador se queje del cast a tipo genérico T */
             return PeliculaViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
