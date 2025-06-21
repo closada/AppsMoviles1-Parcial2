@@ -73,10 +73,8 @@ Aplicación Android desarrollada en Android Studio que permite registrar, modifi
 ├── adapter
 │   └── PeliculaAdapter.kt
 ├── exception
-│   ├── DatosInvalidosException.kt
-│   └── PeliculaDuplicadaException.kt
+│   ├── excepciones.kt
 ├── model
-│   ├── Genero.kt
 │   └── Pelicula.kt
 ├── repository
 │   └── PeliculasRepository.kt
