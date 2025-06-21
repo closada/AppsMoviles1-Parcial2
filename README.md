@@ -1,10 +1,10 @@
-#AppRegistroPeliculas 
+# AppRegistroPeliculas 
 
 Aplicación Android desarrollada en Android Studio que permite registrar, modificar, eliminar, buscar y filtrar películas. Está pensada como una app simple de gestión de películas, con persistencia de datos local en formato JSON y arquitectura MVVM con `ViewModel` compartido.
 
 ---
 
-##Tecnologías y herramientas utilizadas
+## Tecnologías y herramientas utilizadas
 
 - Kotlin
 - Android Studio
@@ -16,7 +16,7 @@ Aplicación Android desarrollada en Android Studio que permite registrar, modifi
 
 ---
 
-##Estructura general de la app
+## Estructura general de la app
 
 ### Pantalla principal (`MainActivity`)
 - Muestra una **lista de películas** en un `RecyclerView`.
@@ -36,7 +36,7 @@ Aplicación Android desarrollada en Android Studio que permite registrar, modifi
 
 ---
 
-##Lógica y arquitectura
+## Lógica y arquitectura
 
 - **MVVM (Model-View-ViewModel)**:
   - `PeliculaViewModel`: gestiona la lógica de negocio y acceso a datos.
@@ -54,7 +54,7 @@ Aplicación Android desarrollada en Android Studio que permite registrar, modifi
 
 ---
 
-##Funcionalidades destacadas
+## Funcionalidades destacadas
 
 ✅ Registrar nuevas películas  
 ✅ Editar películas existentes  
@@ -90,4 +90,4 @@ Aplicación Android desarrollada en Android Studio que permite registrar, modifi
 ---
 
 ### Autores:
-Mailen Acosta Vera, Mangialavore Matias y Camila Losada
+Mailen Acosta Vera, Mangialavore Matias y Losada Camila
