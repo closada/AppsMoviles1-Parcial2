@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground">
 
     <LinearLayout
         android:id="@+id/main"
@@ -16,22 +18,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Título de la Película"
-            android:textStyle="bold"
-            android:textSize="18sp" />
+            android:textColor="?attr/colorOnBackground"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:layout_marginTop="8dp"
+            />
 
         <EditText
             android:id="@+id/etTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingresar título" />
+            android:hint="Ingresar título"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="4dp"
+            android:inputType="textCapWords"
+            />
 
         <!-- Genero -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Género"
-            android:textStyle="bold"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnBackground"
             android:layout_marginTop="16dp"/>
 
         <Spinner
@@ -44,37 +52,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reseña"
-            android:textStyle="bold"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnBackground"
             android:layout_marginTop="16dp"/>
 
         <EditText
             android:id="@+id/etResenia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingresar comentario" />
+            android:hint="Ingresar comentario"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="4dp"
+            />
 
         <!-- Año -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Año de estreno"
-            android:textStyle="bold"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnBackground"
             android:layout_marginTop="16dp"/>
 
         <NumberPicker
             android:id="@+id/npAnio"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"/>
 
         <!-- Calificación -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Calificación"
-            android:textStyle="bold"
-            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnBackground"
             android:layout_marginTop="16dp"/>
 
         <RatingBar
@@ -82,31 +94,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:stepSize="1.0" />
+            android:stepSize="1.0"
+            android:progressTint="@color/gold"
+            android:secondaryProgressTint="@color/grey_light"
+            android:layout_marginTop="8dp"
+            />
 
         <!-- Botones -->
+        <!-- Botón Registrar -->
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="Registrar"
+            android:layout_marginTop="24dp" />
+
+        <!-- Botones Modificar y Eliminar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
             android:layout_marginTop="24dp"
-            android:weightSum="3">
-
-            <Button
-                android:id="@+id/btnRegistrar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Registrar" />
+            android:visibility="gone"
+            android:id="@+id/layoutBotonesModificarEliminar">
 
             <Button
                 android:id="@+id/btnModificar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="Modificar"
-                android:visibility="gone" />
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/btnEliminar"
@@ -114,13 +134,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Eliminar"
-                android:visibility="gone" />
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="?attr/colorError"
+                app:strokeColor="?attr/colorError"/>
         </LinearLayout>
+
         <Button
             android:id="@+id/btnVolver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Volver atrás"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="?attr/colorOnBackground"
             android:layout_marginTop="16dp"/>
 
     </LinearLayout>

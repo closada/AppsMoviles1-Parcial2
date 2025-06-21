@@ -13,19 +13,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="@android:color/white">
-        
+        android:background="?attr/colorSurface">
 
 
         <!-- Título grande -->
+
         <TextView
             android:id="@+id/tvTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Título"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="#000000" />
+
+
 
         <!-- Año y Género -->
         <TextView
@@ -33,9 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Año"
-            android:textSize="14sp"
-            android:textColor="#666666"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?attr/colorOnSurface"
             android:layout_marginTop="4dp" />
+
+
 
         <TextView
             android:id="@+id/tvGenero"
@@ -45,15 +48,19 @@
             android:textSize="14sp"
             android:textColor="#666666" />
 
+
+
         <!-- Comentario -->
         <TextView
             android:id="@+id/tvComentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Comentario"
-            android:textSize="14sp"
-            android:textColor="#444444"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?attr/colorOnSurface"
             android:layout_marginTop="8dp" />
+
+
 
         <!-- Puntuación -->
         <RatingBar
@@ -61,11 +68,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:stepSize="1"
+            android:stepSize="0.5"
+            android:progressTint="@color/gold"
+            android:secondaryProgressTint="@color/grey_light"
             android:isIndicator="true"
+            style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_marginTop="8dp" />
 
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

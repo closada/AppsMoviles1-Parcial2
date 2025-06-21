@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /* funcion para no repetir código toast */
+    /* funcion para no repetir código Toast */
     private fun showToast(mensaje: String) {
         android.widget.Toast.makeText(this, mensaje, android.widget.Toast.LENGTH_SHORT).show()
     }

@@ -89,6 +89,7 @@ class RegistroPeliculaActivity : AppCompatActivity() {
             val indexGenero = Genero.values().indexOf(pelicula.genero)
             spGenero.setSelection(indexGenero)
 
+            binding.layoutBotonesModificarEliminar.visibility = View.VISIBLE
             btnRegistrar.visibility = View.GONE
             btnModificar.visibility = View.VISIBLE
             btnEliminar.visibility = View.VISIBLE
